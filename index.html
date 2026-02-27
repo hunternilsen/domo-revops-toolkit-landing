@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domo RevOps Toolkit — Get Started</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --domo-blue: #99CCEE;
+      --domo-blue-dark: #7BB8E0;
+      --neutral-50: #F1F6FA;
+      --neutral-100: #DCE4EA;
+      --neutral-200: #B7C1CB;
+      --neutral-600: #68737F;
+      --neutral-900: #3F454D;
+      --accent-orange: #FF9922;
+      --accent-orange-hover: #E8891F;
+      --font-primary: 'Open Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --shadow-sm: 0 1px 3px rgba(63,69,77,0.08), 0 1px 2px rgba(63,69,77,0.06);
+      --shadow-md: 0 4px 12px rgba(63,69,77,0.1), 0 2px 4px rgba(63,69,77,0.06);
+      --shadow-lg: 0 8px 20px rgba(63,69,77,0.08), 0 4px 8px rgba(63,69,77,0.04);
+      --shadow-orange-glow: 0 4px 20px rgba(255, 153, 34, 0.3);
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --radius-xl: 16px;
+      --ease-smooth: cubic-bezier(0.83, 0, 0.17, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font-primary);
+      color: var(--neutral-900);
+      background: #FFFFFF;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(2rem); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity 0.6s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       NAVBAR
+    ============================================================ */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--neutral-100);
+    }
+
+    .navbar-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 0.5rem;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--neutral-900);
+      margin-right: 2rem;
+      white-space: nowrap;
+    }
+
+    .navbar-links {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .navbar-links::-webkit-scrollbar { display: none; }
+
+    .navbar-link {
+      padding: 0.4rem 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--neutral-600);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      transition: all 0.2s var(--ease-smooth);
+    }
+
+    .navbar-link:hover {
+      color: var(--neutral-900);
+      background: var(--neutral-50);
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    .hero {
+      background: var(--domo-blue);
+      padding: 8rem 2rem 5rem;
+      text-align: center;
+    }
+
+    .hero-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      border-radius: 100px;
+      margin-bottom: 1.5rem;
+      animation: fadeIn 0.8s var(--ease-out-expo) both;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      animation: fadeInUp 0.8s var(--ease-out-expo) 0.1s both;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.9);
+      line-height: 1.6;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      animation: fadeInUp 0.8s var(--ease-out-expo) 0.2s both;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--accent-orange);
+      color: white;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.9rem 2rem;
+      border-radius: var(--radius-md);
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s var(--ease-smooth);
+      box-shadow: var(--shadow-orange-glow);
+      animation: fadeInUp 0.8s var(--ease-out-expo) 0.3s both;
+    }
+
+    .hero-cta:hover {
+      background: var(--accent-orange-hover);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================================
+       SECTIONS
+    ============================================================ */
+    .section {
+      padding: 5rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-alt {
+      background: var(--neutral-50);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--neutral-900);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--neutral-600);
+      margin-bottom: 3rem;
+      max-width: 600px;
+    }
+
+    /* ============================================================
+       CAPABILITY CARDS
+    ============================================================ */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .capability-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--neutral-100);
+      transition: all 0.3s var(--ease-smooth);
+    }
+
+    .capability-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+    }
+
+    .capability-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--neutral-50);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.4rem;
+    }
+
+    .capability-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .capability-card p {
+      font-size: 0.875rem;
+      color: var(--neutral-600);
+      line-height: 1.6;
+    }
+
+    .capability-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      margin-bottom: 0.75rem;
+    }
+
+    .tag-engineer { background: #E8F4FD; color: #2B7AB5; }
+    .tag-design { background: #FFF3E0; color: #C67600; }
+    .tag-research { background: #E8F5E9; color: #2E7D32; }
+
+    /* ============================================================
+       SETUP STEPS
+    ============================================================ */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .step {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      background: var(--domo-blue);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .step-content h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .step-content p {
+      font-size: 0.875rem;
+      color: var(--neutral-600);
+      line-height: 1.6;
+    }
+
+    .code-block {
+      background: var(--neutral-900);
+      color: #E8ECF0;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      overflow-x: auto;
+      line-height: 1.7;
+    }
+
+    .code-block .comment { color: #68737F; }
+    .code-block .command { color: var(--domo-blue); }
+
+    /* ============================================================
+       COMMANDS TABLE
+    ============================================================ */
+    .commands-group {
+      margin-bottom: 2.5rem;
+    }
+
+    .commands-group h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--neutral-600);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--neutral-100);
+    }
+
+    .command-row {
+      display: flex;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--neutral-50);
+      align-items: baseline;
+    }
+
+    .command-name {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--neutral-900);
+      background: var(--neutral-50);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      white-space: nowrap;
+      min-width: 180px;
+    }
+
+    .command-desc {
+      font-size: 0.85rem;
+      color: var(--neutral-600);
+    }
+
+    /* ============================================================
+       ROLES TABLE
+    ============================================================ */
+    .roles-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--neutral-100);
+    }
+
+    .roles-table th {
+      background: var(--neutral-50);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--neutral-600);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+
+    .roles-table td {
+      background: white;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      border-top: 1px solid var(--neutral-50);
+    }
+
+    .roles-table tr:hover td {
+      background: var(--neutral-50);
+    }
+
+    .role-name {
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       CTA FOOTER
+    ============================================================ */
+    .cta-section {
+      background: var(--domo-blue);
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .cta-section h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      background: var(--neutral-900);
+      color: rgba(255,255,255,0.6);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 768px) {
+      .hero { padding: 7rem 1.5rem 3.5rem; }
+      .section { padding: 3.5rem 1.5rem; }
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .command-row { flex-direction: column; gap: 0.25rem; }
+      .command-name { min-width: unset; }
+      .navbar-links { display: none; }
+      .roles-table { font-size: 0.8rem; }
+      .roles-table th, .roles-table td { padding: 0.5rem 0.65rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .animate-on-scroll { opacity: 1; transform: none; transition: none; }
+      * { animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <div class="navbar-brand">Domo RevOps Toolkit</div>
+      <div class="navbar-links">
+        <a href="#capabilities" class="navbar-link">Capabilities</a>
+        <a href="#setup" class="navbar-link">Setup</a>
+        <a href="#commands" class="navbar-link">Commands</a>
+        <a href="#roles" class="navbar-link">Roles</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Built for Revenue Operations</div>
+      <h1>Build Pro-Code Domo Solutions with AI</h1>
+      <p>Custom Apps, Code Engine functions, Workflow automations, landing pages, and more &mdash; all built by Claude Code with Domo conventions baked in.</p>
+      <a href="#setup" class="hero-cta">Get Started</a>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES -->
+  <section class="section" id="capabilities">
+    <div class="section-inner">
+      <h2 class="section-title animate-on-scroll">What You Can Build</h2>
+      <p class="section-subtitle animate-on-scroll">Describe what you want in plain English. Claude builds it using Domo conventions automatically.</p>
+
+      <div class="capabilities-grid">
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#9881;</div>
+          <span class="capability-tag tag-engineer">Engineering</span>
+          <h3>Domo Custom Apps</h3>
+          <p>Full React + TypeScript apps with Vite, Tailwind, and domo.js. Scaffolded with data hooks, AppDB integration, and proper manifest configuration.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#9889;</div>
+          <span class="capability-tag tag-engineer">Engineering</span>
+          <h3>Code Engine Functions</h3>
+          <p>Server-side functions for data transformations, API integrations, scheduled jobs, and email notifications. Deployed to Domo Code Engine.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#8635;</div>
+          <span class="capability-tag tag-engineer">Engineering</span>
+          <h3>Workflow Automations</h3>
+          <p>Multi-step automation pipelines for data refresh, approvals, notifications, and orchestration. Triggered from apps or schedules.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#9634;</div>
+          <span class="capability-tag tag-design">Design</span>
+          <h3>Landing Pages</h3>
+          <p>Responsive, Domo-branded pages with hero sections, feature grids, stats counters, and CTAs. Preview in browser instantly.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#9993;</div>
+          <span class="capability-tag tag-design">Design</span>
+          <h3>Email Templates</h3>
+          <p>600px responsive HTML emails compatible with all major email clients. Domo-branded with proper inline styles.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#9655;</div>
+          <span class="capability-tag tag-design">Design</span>
+          <h3>Presentations</h3>
+          <p>HTML slide decks with Domo styling, smooth transitions, and print-ready formatting. Perfect for pipeline reviews.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#10022;</div>
+          <span class="capability-tag tag-design">Design</span>
+          <h3>Figma to Code</h3>
+          <p>Convert Figma designs directly into production HTML/CSS. Inspect files for brand compliance and extract design tokens.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#128270;</div>
+          <span class="capability-tag tag-research">Research</span>
+          <h3>Domo Platform Knowledge</h3>
+          <p>Query 624 Product API endpoints, 89 OAuth API endpoints, and the Knowledge Graph for product info and engineering patterns.</p>
+        </div>
+
+        <div class="capability-card animate-on-scroll">
+          <div class="capability-icon">&#128421;</div>
+          <span class="capability-tag tag-engineer">Engineering</span>
+          <h3>Gemini AI Agents</h3>
+          <p>Build and deploy AI agents to Vertex AI Reasoning Engines using the ADK framework. Includes Domo data access and Knowledge Graph tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETUP -->
+  <section class="section section-alt" id="setup">
+    <div class="section-inner">
+      <h2 class="section-title animate-on-scroll">Setup</h2>
+      <p class="section-subtitle animate-on-scroll">Takes about 5 minutes. The script handles everything.</p>
+
+      <div class="steps">
+        <div class="step animate-on-scroll">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Clone the repository</h3>
+            <p>Get a copy of the toolkit on your machine.</p>
+            <div class="code-block">
+              <span class="command">git clone</span> &lt;repo-url&gt; domo-revops-toolkit<br>
+              <span class="command">cd</span> domo-revops-toolkit
+            </div>
+          </div>
+        </div>
+
+        <div class="step animate-on-scroll">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Run the setup script</h3>
+            <p>This installs dependencies, configures your role, connects to the Knowledge Graph, Figma, and GitHub, and sets up daily auto-updates.</p>
+            <div class="code-block">
+              <span class="command">bash</span> setup.sh
+            </div>
+          </div>
+        </div>
+
+        <div class="step animate-on-scroll">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Start building</h3>
+            <p>Open Claude Code and describe what you want. Try one of these:</p>
+            <div class="code-block">
+              <span class="comment"># Open Claude Code</span><br>
+              <span class="command">claude</span><br><br>
+              <span class="comment"># Then just say what you need:</span><br>
+              "Build me a Custom App for tracking our sales pipeline"<br>
+              "Create a Code Engine function that scores leads"<br>
+              "Design a landing page for our new RevOps dashboard"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMANDS -->
+  <section class="section" id="commands">
+    <div class="section-inner">
+      <h2 class="section-title animate-on-scroll">Commands</h2>
+      <p class="section-subtitle animate-on-scroll">Type / in Claude Code to see these, or just describe what you want.</p>
+
+      <div class="commands-group animate-on-scroll">
+        <h3>Build &amp; Engineer</h3>
+        <div class="command-row">
+          <span class="command-name">/build-custom-app</span>
+          <span class="command-desc">Scaffold a complete Domo Custom App (Vite + React + TypeScript)</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/build-code-engine</span>
+          <span class="command-desc">Create a Domo Code Engine server-side function package</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/build-workflow</span>
+          <span class="command-desc">Design and generate a Domo Workflow automation</span>
+        </div>
+      </div>
+
+      <div class="commands-group animate-on-scroll">
+        <h3>Design &amp; Content</h3>
+        <div class="command-row">
+          <span class="command-name">/design-landing-page</span>
+          <span class="command-desc">Build a responsive landing page with Domo branding</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/design-email-template</span>
+          <span class="command-desc">Create a 600px responsive HTML email</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/design-presentation</span>
+          <span class="command-desc">Build an HTML slide deck with Domo styling</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/create-icon</span>
+          <span class="command-desc">Generate SVG icons in Domo's minimalist line style</span>
+        </div>
+      </div>
+
+      <div class="commands-group animate-on-scroll">
+        <h3>Figma</h3>
+        <div class="command-row">
+          <span class="command-name">/figma-to-code</span>
+          <span class="command-desc">Convert a Figma design into real HTML/CSS</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/figma-inspect</span>
+          <span class="command-desc">Analyze a Figma file's components and brand compliance</span>
+        </div>
+      </div>
+
+      <div class="commands-group animate-on-scroll">
+        <h3>Research</h3>
+        <div class="command-row">
+          <span class="command-name">/query-revops</span>
+          <span class="command-desc">Look up Domo products, platform capabilities, and engineering patterns</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/get-product-info</span>
+          <span class="command-desc">Deep-dive on any Domo product</span>
+        </div>
+      </div>
+
+      <div class="commands-group animate-on-scroll">
+        <h3>Utilities</h3>
+        <div class="command-row">
+          <span class="command-name">/new-project</span>
+          <span class="command-desc">Create a new project with organized folders</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/export-project</span>
+          <span class="command-desc">Package project deliverables for sharing</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/status</span>
+          <span class="command-desc">Show toolkit health dashboard</span>
+        </div>
+        <div class="command-row">
+          <span class="command-name">/fix-my-setup</span>
+          <span class="command-desc">Diagnose and repair broken connections</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROLES -->
+  <section class="section section-alt" id="roles">
+    <div class="section-inner">
+      <h2 class="section-title animate-on-scroll">Roles</h2>
+      <p class="section-subtitle animate-on-scroll">Each role gets scoped access to commands, MCP servers, and file editing.</p>
+
+      <div class="animate-on-scroll">
+        <table class="roles-table">
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Build Apps</th>
+              <th>Design</th>
+              <th>Research</th>
+              <th>Deploy</th>
+              <th>Propose Changes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="role-name">Owner</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Direct push</td>
+            </tr>
+            <tr>
+              <td class="role-name">Admin</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Via PR</td>
+            </tr>
+            <tr>
+              <td class="role-name">Engineer</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td>Via PR</td>
+            </tr>
+            <tr>
+              <td class="role-name">Analyst</td>
+              <td>No</td>
+              <td>Yes</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td>No</td>
+            </tr>
+            <tr>
+              <td class="role-name">Viewer</td>
+              <td>No</td>
+              <td>No</td>
+              <td>Yes</td>
+              <td>No</td>
+              <td>No</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div>
+      <h2>Ready to build?</h2>
+      <p>Clone the repo, run setup, and start describing what you need. Claude handles the rest.</p>
+      <a href="#setup" class="hero-cta">Get Started</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Domo RevOps Toolkit &mdash; Built with Claude Code</p>
+  </footer>
+
+  <!-- SCROLL ANIMATIONS -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script>
+
+</body>
+</html>
